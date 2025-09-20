@@ -1,5 +1,7 @@
 # my_mlops_project
 
+This is a test to trigger the CI workflow.
+
 This directory contains an ML project based on the default
 [Databricks MLOps Stacks](https://github.com/databricks/mlops-stacks),
 defining a production-grade ML pipeline for automated retraining and batch inference of an ML model on tabular data.
