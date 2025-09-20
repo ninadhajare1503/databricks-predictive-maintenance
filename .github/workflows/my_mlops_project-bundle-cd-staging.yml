@@ -16,6 +16,9 @@ jobs:
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@v0.205.0
 
+      - name: Debug Host Value
+        run: echo "The host being used is ${{ secrets.DATABRICKS_HOST }}"
+        
       - name: Deploy and Run Staging Job
         run: databricks bundle deploy -t staging
         working-directory: ./my_mlops_project
