@@ -1,37 +1,27 @@
-# This GitHub workflow deploys Bundle resources (ML resource config and more)
-# defined under my_mlops_project/resources/*
-# and my_mlops_project/databricks.yml with staging deployment target configs,
-# when PRs are merged into the default branch
-name: Bundle Deployment for my_mlops_project Staging
+# .github/workflows/my_mlops_project-bundle-cd-staging.yml
 
+name: CI - Run Modeling Notebook on Staging
+
+# This action triggers on Pull Requests that target the 'main' branch
 on:
-  push:
+  pull_request:
     branches:
-      - 'main'
-  workflow_dispatch:
-
-defaults:
-  run:
-    working-directory: ./my_mlops_project
-
-env:
-  ARM_TENANT_ID: ${{ secrets.STAGING_AZURE_SP_TENANT_ID }}
-  ARM_CLIENT_ID: ${{ secrets.STAGING_AZURE_SP_APPLICATION_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.STAGING_AZURE_SP_CLIENT_SECRET }}
-  
+      - main
 
 jobs:
-  staging:
-    concurrency: my_mlops_project-staging-bundle-job
+  run-notebook-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: databricks/setup-cli@v0.236.0
-      - name: Validate Bundle For Staging
-        id: validate
-        run: |
-          databricks bundle validate -t staging
-      - name: Deploy Bundle to Staging
-        id: deploy
-        run: |
-          databricks bundle deploy -t staging
+      # 1. Check out the code from the Pull Request
+      - uses: actions/checkout@v3
+
+      # 2. Set up the Databricks CLI with credentials
+      - uses: databricks/setup-cli@v0.205.0
+
+      # 3. Deploy and run the notebook using the Databricks Bundle
+      # This command reads your databricks.yml file and executes the staging job
+      - run: databricks bundle deploy -t staging
+        env:
+          # These secrets are required for authentication
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
