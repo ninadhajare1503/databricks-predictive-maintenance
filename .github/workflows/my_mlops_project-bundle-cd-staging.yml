@@ -8,19 +8,18 @@ on:
 jobs:
   run-notebook-test:
     runs-on: ubuntu-latest
+    # 'steps' is a list and must be indented under the job
     steps:
-      # Each item under 'steps' must start with a '-' and be indented correctly
+      # Each item in the list must start with a '-' and have the same indentation
       - name: Check out code
         uses: actions/checkout@v3
 
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@v0.205.0
 
-      - name: Debug Host Value
-        run: echo "The host being used is ${{ secrets.DATABRICKS_HOST_STAGING }}"
-        
+      # This is the test step with the unique name
       - name: I AM RUNNING THE LATEST CODE - Deploy and Run
-      run: databricks bundle deploy -t staging
+        run: databricks bundle deploy -t staging
         working-directory: ./my_mlops_project
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STAGING }}
