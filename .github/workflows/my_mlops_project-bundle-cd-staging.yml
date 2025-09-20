@@ -21,6 +21,7 @@ jobs:
       # 3. Deploy and run the notebook using the Databricks Bundle
       # This command reads your databricks.yml file and executes the staging job
       - run: databricks bundle deploy -t staging
+       working-directory: ./my_mlops_project
         env:
           # These secrets are required for authentication
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
