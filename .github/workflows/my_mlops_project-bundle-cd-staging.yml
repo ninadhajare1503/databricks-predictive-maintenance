@@ -19,8 +19,8 @@ jobs:
       - name: Debug Host Value
         run: echo "The host being used is ${{ secrets.DATABRICKS_HOST_STAGING }}"
         
-      - name: Deploy and Run Staging Job
-        run: databricks bundle deploy -t staging
+      - name: I AM RUNNING THE LATEST CODE - Deploy and Run
+      run: databricks bundle deploy -t staging
         working-directory: ./my_mlops_project
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STAGING }}
